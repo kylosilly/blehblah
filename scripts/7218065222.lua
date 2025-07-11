@@ -44,10 +44,21 @@ if not enchanting then
     return print("Enchanting Folder Not Found!")
 end
 
+local item_names = {}
+local npc_names = {}
+
 local last_click_time = 0
 
-ui.label("Any crashes by tp are caused by assembly")
-ui.label("Tp probably detected use at own risk :3")
+for _, v in ipairs(npcs:Children()) do
+    table.insert(npc_names, v:Name())
+end
+
+for _, v in ipairs(purchaseable:Children()) do
+    table.insert(item_names, v:Name())
+end
+
+ui.label("Welcome "..utils.get_username().." Thanks for using my script <3")
+ui.label("Note: Tp is maybe detected use at own risk!")
 ui.label("")
 ui.label("Dig Settings")
 local dig_minigame = ui.new_checkbox("Auto Dig Minigame")
@@ -56,6 +67,12 @@ ui.label("")
 ui.label("Pizza Delivery Settings")
 local pizza_penguin_teleport = ui.button("Teleport To Pizza Penguin")
 local customer_teleport = ui.button("Teleport To Customer")
+ui.label("")
+ui.label("Main Teleport Settings")
+local npc_dropdown = ui.new_combo("Select Npc", npc_names)
+local npc_teleport_button = ui.button("Teleport To Selected Npc")
+local item_dropdown = ui.new_combo("Select Item", item_names)
+local item_teleport_button = ui.button("Teleport To Selected Item")
 ui.label("")
 ui.label("Misc Teleport Settings")
 local enchantment_table_teleport = ui.button("Teleport To Enchantment Table")
@@ -70,15 +87,16 @@ cheat.set_callback("paint", function()
             local player_bar = player_gui:FindChild("Dig"):FindChild("Safezone"):FindChild("Holder"):FindChild("PlayerBar")
             if globals.is_focused() then
                 local clicked_time = globals.curtime()
+                local last_positon = utils.read_memory("float", strong_hit:Address() + frame_position_x_offset)
                 if dig_minigame_method:get() == 1 then
                     utils.write_memory("float", player_bar:Address() + frame_position_x_offset, utils.read_memory("float", strong_hit:Address() + frame_position_x_offset))
-                    if clicked_time - last_click_time >= 0.2 then
+                    if clicked_time - last_click_time >= 0.25 then
                         input.click()
                         last_click_time = clicked_time
                     end
                 elseif dig_minigame_method:get() == 0 then
                     local distance = utils.read_memory("float", player_bar:Address() + frame_position_x_offset) - utils.read_memory("float", strong_hit:Address() + frame_position_x_offset)
-                    if distance < 0.02 and clicked_time - last_click_time >= 0.8 then
+                    if distance < 0.02 and clicked_time - last_click_time >= 1 and distance ~= last_positon then 
                         input.click()
                         last_click_time = clicked_time
                     end
@@ -92,6 +110,9 @@ cheat.set_callback("paint", function()
     end
 
     if customer_teleport:get() then
+        if not pizza_customer:FindChildByClass("Model") then
+            return print("Pizza Customer Not Found!")
+        end
         root_part:Primitive():SetPartPosition(pizza_customer:FindChildByClass("Model"):FindChild("HumanoidRootPart"):Primitive():GetPartPosition())
     end
 
@@ -111,5 +132,24 @@ cheat.set_callback("paint", function()
 
     if enchantment_table_teleport:get() then
         root_part:Primitive():SetPartPosition(enchanting:FindChild("EnchantmentAltar"):FindChild("EnchantPart"):Primitive():GetPartPosition())
+    end
+
+    if npc_teleport_button:get() then
+        for i in ipairs(npcs:Children()) do
+            if i == npc_dropdown:get() then
+                root_part:Primitive():SetPartPosition(npcs:FindChild(npc_names[i]):FindChild("HumanoidRootPart"):Primitive():GetPartPosition())
+            end
+        end
+    end
+
+    if item_teleport_button:get() then
+        for i in ipairs(purchaseable:Children()) do
+            if i == item_dropdown:get() then
+                if not purchaseable:FindChild(item_names[i]):FindChildByClass("Part") then
+                    return print("Cant Teleport To This Item As It Dosent Have A Part Or Is Missing!")
+                end
+                root_part:Primitive():SetPartPosition(purchaseable:FindChild(item_names[i]):FindChildByClass("Part"):Primitive():GetPartPosition())
+            end
+        end
     end
 end)
