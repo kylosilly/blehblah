@@ -8,3 +8,4 @@ http.get("https://raw.githubusercontent.com/kylosilly/blehblah/refs/heads/main/s
         print(results)
     end
 end)
+print("Made by @kylosilly ;-b")
