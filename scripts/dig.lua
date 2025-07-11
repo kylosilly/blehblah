@@ -113,5 +113,3 @@ cheat.set_callback("paint", function()
         root_part:Primitive():SetPartPosition(enchanting:FindChild("EnchantmentAltar"):FindChild("EnchantPart"):Primitive():GetPartPosition())
     end
 end)
-
-print("Loaded script made by @kylosilly on discord")
