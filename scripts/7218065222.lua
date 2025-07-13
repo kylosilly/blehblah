@@ -59,7 +59,6 @@ end
 
 ui.label("Welcome "..utils.get_username().." Thanks for using my script <3")
 ui.label("Note: Tp is maybe detected use at own risk!")
-ui.label("Happy bday to me @kylosilly")
 ui.label("")
 ui.label("Dig Settings")
 local dig_minigame = ui.new_checkbox("Auto Dig Minigame")
