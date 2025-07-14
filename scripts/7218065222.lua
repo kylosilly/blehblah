@@ -1,6 +1,9 @@
 -- offsets might not always be correct
-local attribute_to_value_offset = 0x30
-local frame_position_x_offset = 0x3B8
+local frame_position_x_offset = nil
+
+http.get("https://offsets.ntgetwritewatch.workers.dev/offsets.hpp", function(v)
+    frame_position_offset_x = v:match("inline%s+constexpr%s+uintptr_t%s+FramePositionOffsetX%s*=%s*(0x%x+)%s*;")
+end)
 
 local local_player = globals.localplayer()
 local workspace = globals.workspace()
