@@ -11,6 +11,16 @@ end)
 local local_player = globals.localplayer()
 local workspace = globals.workspace()
 
+local primary_ammo_value = local_player:ModelInstance():FindChild("PrimaryAmmo")
+if not primary_ammo_value then
+    return print("Primary Ammo Value Not Found Make Sure You Run It In Game!")
+end
+
+local secondary_ammo_value = local_player:ModelInstance():FindChild("SecondaryAmmo")
+if not secondary_ammo_value then
+    return print("Secondary Ammo Value Not Found Make Sure You Run It In Game!")
+end
+
 ui.label("Welcome "..utils.get_username().." Thanks for using my script <3")
 ui.label("Main Settings")
 local inf_ammo_checkbox = ui.new_checkbox("Inf Ammo")
@@ -18,15 +28,7 @@ ui.label("")
 ui.label("Teleport Settings")
 local dropoff_teleport_button = ui.button("Tp To Dropoff Zone")
 
-local primary_ammo_value = local_player:ModelInstance():FindChild("PrimaryAmmo")
-if not primary_ammo_value then
-    return print("Stamina Value Not Found!")
-end
-
-local secondary_ammo_value = local_player:ModelInstance():FindChild("SecondaryAmmo")
-if not secondary_ammo_value then
-    return print("Max Stamina Value Not Found!")
-end
+local last_saved_position = nil
 
 function get_dropoff_zone()
     return workspace:FindChild("BagSecuredArea") and workspace:FindChild("BagSecuredArea"):FindChildByClass("Part") or nil
