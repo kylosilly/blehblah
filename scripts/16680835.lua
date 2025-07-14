@@ -28,8 +28,6 @@ if not secondary_ammo_value then
     return print("Max Stamina Value Not Found!")
 end
 
-local last_saved_position = nil
-
 function get_dropoff_zone()
     return workspace:FindChild("BagSecuredArea") and workspace:FindChild("BagSecuredArea"):FindChildByClass("Part") or nil
 end
