@@ -5,7 +5,7 @@ http.get("https://raw.githubusercontent.com/kylosilly/blehblah/refs/heads/main/s
     if success then
         results()
     else
-        print(results)
+        print("Game Not Supported")
     end
 end)
 print("Made by @kylosilly ;-b")
